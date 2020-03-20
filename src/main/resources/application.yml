@@ -1,0 +1,34 @@
+# Spring configuration
+spring:
+  # application properties
+  application:
+    name: Impress
+
+  profiles:
+    active: dev
+    #active: prod
+
+  # datasource properties
+  datasource:
+    url: jdbc:postgresql://localhost:5432/impress_db
+    username: postgres
+    password: postgres
+
+  # JPA and Hibernate properties
+  jpa:
+    database-platform: POSTGRESQL
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+        ddl-auto: update
+    open-in-view: true
+    show-sql: true
+    generate-ddl: true
+
+# Server configuration
+server:
+  port: 8085
+  servlet:
+    context-path: /impress
