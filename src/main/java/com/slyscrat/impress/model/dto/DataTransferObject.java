@@ -10,5 +10,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class DataTransferObject implements Serializable {
-    private Long id;
+    private Integer id;
 }
