@@ -1,5 +1,6 @@
-package com.slyscrat.impress.model.dto;
+package com.slyscrat.impress.model.dto.game;
 
+import com.slyscrat.impress.model.dto.DataTransferObject;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -11,12 +12,9 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class GameDto extends DataTransferObject {
+public class GameGenreDto extends DataTransferObject {
     @NotBlank
-    private String name;
-    @NotBlank
-    private String icon;
     private String description;
-    private String developer;
-    private Set<Integer> genres = new HashSet<>();
+
+    private Set<Integer> games = new HashSet<>();
 }

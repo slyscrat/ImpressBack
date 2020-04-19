@@ -31,3 +31,5 @@ build/
 .vscode/
 
 /logs
+/src/main/resources/sources.properties
+src/main/java/com/slyscrat/impress/controller/TestController.java
