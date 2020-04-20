@@ -1,9 +1,6 @@
 package com.slyscrat.impress.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+//@EqualsAndHashCode(callSuper = false)
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class GameEntity extends AbstractDataBaseEntity {
     @Id
@@ -30,7 +28,6 @@ public class GameEntity extends AbstractDataBaseEntity {
     @NotNull
     @Column(name = "day", nullable = false)
     private String icon;
-    //"https://steamcdn-a.akamaihd.net/steam/apps/" + appId + "/header.jpg";
 
     @Column(name = "developer", nullable = false)
     private String developer;
@@ -43,6 +40,7 @@ public class GameEntity extends AbstractDataBaseEntity {
     @Column(name = "screenshots", nullable = false, length = 800)
     private String screenshots;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "genre_to_game",
@@ -52,10 +50,4 @@ public class GameEntity extends AbstractDataBaseEntity {
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT)
     )
     private Set<GameGenreEntity> genres = new HashSet<>();
-
-    // For DEL
-    @Override
-    public String toString(){
-        return getId() + " : " + name;
-    }
 }

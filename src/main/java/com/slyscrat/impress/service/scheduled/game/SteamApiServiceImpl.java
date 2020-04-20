@@ -1,6 +1,5 @@
 package com.slyscrat.impress.service.scheduled.game;
 
-import com.slyscrat.impress.exception.InnerLogicException;
 import com.slyscrat.impress.model.dto.game.GameDto;
 import com.slyscrat.impress.service.crud.game.GameCrudService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,63 +22,36 @@ public class SteamApiServiceImpl implements SteamApiService {
     
     @Value("${steam.api.game.info.url}")
     private String gameInfoUrl;
-    
-    @Value("${steam.api.key}")
-    private String key;
-    
+
     private final GameCrudService gameCrudService;
     private final SteamJsonParserService parserService;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // TODO : remove counter
     @Override
     @Scheduled(cron = "0 0 3 * * ?")
-    public void checkGamesList() {
-        System.out.println("-----------------------------------------------------------------");
-        gameCrudService.getAllAppIds();
-        Set<Integer> dbAppIds = new HashSet();
-        int counter = 0;
-        String res = sendRequest(gamesListUrl);
-        Set<Integer> set = parserService.getGameIdSet(res);
-        //for (Integer gameId: parserService.getGameIdSet(sendRequest(gamesListUrl/*, key*/))) {
-        for (Integer gameId: set) {
-            counter++;
-            System.out.println(counter);
-            if (dbAppIds == null || !dbAppIds.contains(gameId)) {
-                if (counter < 4) continue;
-                if (counter == 10) break;
-                System.out.println(gameId);
-                if(addGameInfo(gameId))
-                    dbAppIds.add(gameId);
+    public void checkNewGames() {
+        GameDto game;
+        Set<Integer> dbAppIds = new HashSet<>(gameCrudService.getAllAppIds());
+        int req = 0;
+        for (Integer gameId: parserService.getGameIdSet(sendRequest(gamesListUrl))) {
+            if (dbAppIds.isEmpty() || !dbAppIds.contains(gameId)) {
+                req++;
+                if (req % 5 == 0) try { Thread.sleep(10000); } catch (InterruptedException e) {}
+
+                game = sendAppIdReq(gameId);
+                if (game != null && !dbAppIds.contains(game.getId())){
+                    gameCrudService.create(game);
+                    dbAppIds.add(game.getId());
+                }
             }
-            //if (counter > 3) break;
         }
 
     }
 
-    @Override
-    public boolean addGameInfo(int appId) {
+    private GameDto sendAppIdReq(int appId) {
         String res = sendRequest(gameInfoUrl + appId);
-        if (containsHanScript(res)) return false;
-        //GameDto gameDto = parserService.getGameFullDto(sendRequest(gameInfoUrl, language, String.valueOf(appId)));
-        GameDto gameDto = parserService.getGameFullDto(res);
-        if (gameDto == null) return false;
-        System.out.println(gameDto);
-        int count = 0;
-        for (String screen : gameDto.getScreenshots()) {
-            count += screen.length();
-        }
-        System.out.println("des= " + gameDto.getDescription().length());
-        System.out.println("dev= " + gameDto.getDeveloper().length());
-        System.out.println("ico= " + gameDto.getIcon().length());
-        System.out.println("nam= " + gameDto.getName().length());
-        gameCrudService.create(gameDto);
-        return true;
-        /*try {
-
-        } catch (IOException ex) {
-            throw new InnerLogicException(SteamApiService.class, "addGameInfo", ex);
-        }*/
+        if (containsHanScript(res)) return null;
+        return parserService.getGameFullDto(res);
     }
 
     private boolean containsHanScript(String s) {

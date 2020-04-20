@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONArray;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,11 +20,7 @@ import java.util.stream.Collectors;
 public class SteamJsonParserServiceImpl implements SteamJsonParserService{
 
     private final GameGenreCrudService gameGenreCrudService;
-    /*private final Set<GameGenreDto> existedGameGenres;
-
-    public SteamJsonParserServiceImpl(GameGenreCrudService gameGenreCrudService){
-        this.existedGameGenres = gameGenreCrudService.findAll();
-    }*/
+    private final Set<GameGenreDto> set = new HashSet<>();
 
     @Override
     public Set<Integer> getGameIdSet(String json) {
@@ -35,11 +32,10 @@ public class SteamJsonParserServiceImpl implements SteamJsonParserService{
     @Override
     public GameDto getGameFullDto(String json) {
         Object document = Configuration.defaultConfiguration().jsonProvider().parse(json);
-        Set<GameGenreDto> set = gameGenreCrudService.findAll();
-        System.out.println(json);
+        if (set.isEmpty()) set.addAll(gameGenreCrudService.findAll());
         GameDto gameDto = new GameDto();
-        if (valueOf(document, "$..data.type").toString().equals("dlc")) return null;
-
+        if (valueOf(document, "$..success").equals("false")) return null;
+        if (valueOf(document, "$..data.type").equals("dlc")) return null;
         gameDto.setId(Integer.parseInt(valueOf(document, "$..data.steam_appid")));
         gameDto.setName(valueOf(document, "$..data.name"));
         gameDto.setDescription(valueOf(document, "$..data.short_description"));
@@ -51,7 +47,7 @@ public class SteamJsonParserServiceImpl implements SteamJsonParserService{
                                 .map(genre -> {
                                     int id = Integer.parseInt(genre.toString());
                                     for (GameGenreDto existedGameGenre : set) {
-                                        if (existedGameGenre.equals(id))
+                                        if (existedGameGenre.getId().equals(id))
                                             return existedGameGenre;
                                     }
                                     return null;

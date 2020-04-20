@@ -58,24 +58,19 @@ public class GameMapper extends AbstractMapper<GameEntity, GameDto> {
                 .collect(Collectors.toSet()));
     }
 
-    // TODO : remove System.out
     @Override
     protected void mapSpecificFields(GameDto source, GameEntity destination) {
         source.getScreenshots().forEach(screen -> stringBuilder.append(screen).append(";"));
-        System.out.println("scr= " + stringBuilder.toString().length());
-        System.out.println("check= " + stringBuilder.toString());
         destination.setScreenshots(stringBuilder.toString());
         stringBuilder.setLength(0);
-        System.out.println("empty= " + stringBuilder.toString());
-
+        destination.getGenres().forEach(gameGenreEntity -> gameGenreEntity.getGames().remove(destination));
+        destination.getGenres().clear();
         source.getGenres().forEach(genre -> {
-            System.out.println("gen= " + genre);
             GameGenreEntity genreEntity = gameGenreRepository.findById(genre.getId())
                     .orElseThrow(() -> new EntityNotFoundException(GameGenreEntity.class, genre));
             genreEntity.getGames().add(destination);
             destination.getGenres().add(genreEntity);
         });
-        System.out.println("ent= " +destination);
     }
 }
 

@@ -16,5 +16,5 @@ public class GameGenreDto extends DataTransferObject {
     @NotBlank
     private String description;
 
-    private Set<Integer> games = new HashSet<>();
+    //private Set<Integer> games = new HashSet<>();
 }

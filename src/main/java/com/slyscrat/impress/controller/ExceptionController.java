@@ -25,4 +25,11 @@ public class ExceptionController {
         LOGGER.error("No such entity exists exception", exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Something went terribly wrong on the server side.");
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleOtherExceptions(RuntimeException exception) {
+        String errorMessage = "Unfortunately, internal server error has occurred";
+        LOGGER.error("Unpredicted internal server error has occurred", exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+    }
 }

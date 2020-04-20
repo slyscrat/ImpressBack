@@ -1,9 +1,6 @@
 package com.slyscrat.impress.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public class GameGenreEntity extends AbstractDataBaseEntity{
     @Id
     @NotNull
@@ -26,9 +24,15 @@ public class GameGenreEntity extends AbstractDataBaseEntity{
     @Column(name = "description", nullable = false)
     private String description;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(
             mappedBy = "genres",
             fetch = FetchType.LAZY
     )
     private Set<GameEntity> games = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return id + " : " + description;
+    }
 }

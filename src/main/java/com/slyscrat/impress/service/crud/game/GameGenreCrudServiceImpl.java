@@ -30,16 +30,16 @@ public class GameGenreCrudServiceImpl
 
     @Override
     public GameGenreDto create(GameGenreDto dto) {
-        GameGenreEntity gameEntity = new GameGenreEntity();
-        mapper.map(dto, gameEntity);
-        return mapper.map(repository.save(gameEntity));
+        GameGenreEntity gameGenreEntity = new GameGenreEntity();
+        mapper.map(dto, gameGenreEntity);
+        return mapper.map(repository.save(gameGenreEntity));
     }
 
     @Override
     public GameGenreDto update(GameGenreDto dto) {
-        GameGenreEntity gameEntity = repository.findById(dto.getId()).orElse(new GameGenreEntity());
-        mapper.map(dto, gameEntity);
-        return mapper.map(repository.save(gameEntity));
+        GameGenreEntity gameGenreEntity = repository.findById(dto.getId()).orElse(new GameGenreEntity());
+        mapper.map(dto, gameGenreEntity);
+        return mapper.map(repository.save(gameGenreEntity));
     }
 
     @Override

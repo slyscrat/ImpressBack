@@ -9,6 +9,6 @@ import java.util.Set;
 
 @Repository
 public interface GameRepository extends JpaRepository<GameEntity, Integer> {
-    @Query("select g.id from GameEntity g")
+    @Query("select g.id from GameEntity g order by g.id")
     Set<Integer> getAllAppIds();
 }
