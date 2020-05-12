@@ -50,7 +50,7 @@ public class SteamApiServiceImpl implements SteamApiService {
 
     private GameDto sendAppIdReq(int appId) {
         String res = sendRequest(gameInfoUrl + appId);
-        if (containsHanScript(res)) return null;
+        if (res == null || containsHanScript(res)) return null;
         return parserService.getGameFullDto(res);
     }
 

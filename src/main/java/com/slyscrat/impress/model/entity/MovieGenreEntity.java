@@ -8,13 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "game_genres")
+@Table(name = "movie_genres")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-public class GameGenreEntity extends AbstractDataBaseEntity{
+public class MovieGenreEntity extends AbstractDataBaseEntity{
     @Id
     @NotNull
     @Column(name = "id", unique = true, nullable = false)
@@ -29,11 +29,5 @@ public class GameGenreEntity extends AbstractDataBaseEntity{
             mappedBy = "genres",
             fetch = FetchType.LAZY
     )
-    private Set<GameEntity> games = new HashSet<>();
-
-    // TODO : del
-    @Override
-    public String toString() {
-        return id + " : " + name;
-    }
+    private Set<MovieEntity> movies = new HashSet<>();
 }

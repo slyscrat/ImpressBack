@@ -14,7 +14,7 @@ import java.util.Set;
 @ToString
 public class GameGenreDto extends DataTransferObject {
     @NotBlank
-    private String description;
+    private String name;
 
     //private Set<Integer> games = new HashSet<>();
 }

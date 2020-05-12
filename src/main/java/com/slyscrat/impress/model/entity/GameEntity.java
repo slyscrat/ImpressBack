@@ -26,7 +26,7 @@ public class GameEntity extends AbstractDataBaseEntity {
     private String name;
 
     @NotNull
-    @Column(name = "day", nullable = false)
+    @Column(name = "icon", nullable = false)
     private String icon;
 
     @Column(name = "developer", nullable = false)
@@ -50,4 +50,10 @@ public class GameEntity extends AbstractDataBaseEntity {
             inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT)
     )
     private Set<GameGenreEntity> genres = new HashSet<>();
+
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "game",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<GameRateEntity> ratedBy = new HashSet<>();
 }

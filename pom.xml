@@ -21,6 +21,7 @@
         <modelmapper.version>2.3.5</modelmapper.version>
         <swagger.io.version>2.9.2</swagger.io.version>
         <modelmapper.version>2.3.5</modelmapper.version>
+        <moviedb.version>4.3</moviedb.version>
     </properties>
 
     <dependencies>
@@ -89,6 +90,11 @@
             <artifactId>annotations</artifactId>
             <version>17.0.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.omertron</groupId>
+            <artifactId>themoviedbapi</artifactId>
+            <version>${moviedb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.modelmapper</groupId>

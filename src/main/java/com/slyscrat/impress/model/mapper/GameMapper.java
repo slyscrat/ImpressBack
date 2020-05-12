@@ -34,6 +34,8 @@ public class GameMapper extends AbstractMapper<GameEntity, GameDto> {
                 .addMappings(m -> {
                     m.skip(GameEntity::setScreenshots);
                     m.skip(GameEntity::setGenres);
+                    // TODO
+                    m.skip(GameEntity::setRatedBy);
                 })
                 .setPostConverter(convertToEntity());
         mapper.createTypeMap(entityClass, dtoClass)
@@ -52,7 +54,7 @@ public class GameMapper extends AbstractMapper<GameEntity, GameDto> {
                 .map(genre -> {
                     GameGenreDto dto = new GameGenreDto();
                     dto.setId(genre.getId());
-                    dto.setDescription(genre.getDescription());
+                    dto.setName(genre.getName());
                     return dto;
                 })
                 .collect(Collectors.toSet()));
