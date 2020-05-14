@@ -13,6 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public class CrewEntity extends AbstractDataBaseEntity{
     @Id
     @NotNull

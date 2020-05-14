@@ -32,4 +32,5 @@ build/
 
 /logs
 /src/main/resources/sources.properties
+/src/main/resources/movie_ids_05_01_2020.json
 src/main/java/com/slyscrat/impress/controller/TestController.java

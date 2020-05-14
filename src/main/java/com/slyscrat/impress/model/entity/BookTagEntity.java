@@ -17,6 +17,7 @@ import java.util.Set;
 public class BookTagEntity extends AbstractDataBaseEntity{
     @Id
     @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 

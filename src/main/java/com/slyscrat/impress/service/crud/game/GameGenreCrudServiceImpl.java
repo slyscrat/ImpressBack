@@ -24,8 +24,8 @@ public class GameGenreCrudServiceImpl
     }
 
     @Override
-    public Set<Integer> getAllIds() {
-        return repository.getAllIds();
+    public Set<Integer> getIdsSet() {
+        return repository.getIdsSet();
     }
 
     @Override

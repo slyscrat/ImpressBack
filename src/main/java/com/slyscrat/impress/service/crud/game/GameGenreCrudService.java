@@ -6,5 +6,5 @@ import com.slyscrat.impress.service.crud.CrudService;
 import java.util.Set;
 
 public interface GameGenreCrudService extends CrudService<GameGenreDto> {
-    Set<Integer> getAllIds();
+    Set<Integer> getIdsSet();
 }

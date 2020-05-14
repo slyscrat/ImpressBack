@@ -1,9 +1,6 @@
 package com.slyscrat.impress.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -33,4 +30,26 @@ public class MovieCrewEntity extends AbstractDataBaseEntity{
 
     @Column(name = "post")
     private String post;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        MovieCrewEntity that = (MovieCrewEntity) o;
+
+        if (getCrew().getId() != null && getMovie().getId() != null ?
+                !getCrew().getId().equals(that.getCrew().getId()) || !getMovie().getId().equals(that.getMovie().getId())
+                : that.getCrew().getId() != null && that.getMovie().getId() != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getCrew().getId().hashCode()*getMovie().getId().hashCode();
+    }
 }

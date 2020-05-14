@@ -7,6 +7,6 @@ import java.util.Set;
 
 public interface GameCrudService extends CrudService<GameDto> {
 
-    Set<Integer> getAllAppIds();
+    Set<Integer> getIdsSet();
     //Set<GameDto> getAllUserGames();
 }

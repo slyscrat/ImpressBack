@@ -10,5 +10,5 @@ import java.util.Set;
 @Repository
 public interface GameGenreRepository extends JpaRepository<GameGenreEntity, Integer> {
     @Query("select gg.id from GameGenreEntity gg")
-    Set<Integer> getAllIds();
+    Set<Integer> getIdsSet();
 }

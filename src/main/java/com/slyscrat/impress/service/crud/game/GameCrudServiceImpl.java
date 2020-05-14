@@ -25,8 +25,8 @@ public class GameCrudServiceImpl
     }
 
     @Override
-    public Set<Integer> getAllAppIds() {
-        return repository.getAllAppIds();
+    public Set<Integer> getIdsSet() {
+        return repository.getIdsSet();
     }
 
     @Override

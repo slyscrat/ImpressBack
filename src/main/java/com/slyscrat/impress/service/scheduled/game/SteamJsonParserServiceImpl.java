@@ -6,6 +6,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.slyscrat.impress.model.dto.game.GameDto;
 import com.slyscrat.impress.model.dto.game.GameGenreDto;
 import com.slyscrat.impress.service.crud.game.GameGenreCrudService;
+import com.slyscrat.impress.service.scheduled.AbstractJsonParser;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONArray;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class SteamJsonParserServiceImpl implements SteamJsonParserService{
+public class SteamJsonParserServiceImpl extends AbstractJsonParser implements SteamJsonParserService{
 
     private final GameGenreCrudService gameGenreCrudService;
     private final Set<GameGenreDto> set = new HashSet<>();
@@ -39,9 +40,10 @@ public class SteamJsonParserServiceImpl implements SteamJsonParserService{
         gameDto.setId(Integer.parseInt(valueOf(document, "$..data.steam_appid")));
         gameDto.setName(valueOf(document, "$..data.name"));
         gameDto.setDescription(valueOf(document, "$..data.short_description"));
+        if (gameDto.getDescription() == null) return null;
         gameDto.setIcon(valueOf(document, "$..data.header_image"));
         gameDto.setDeveloper(valueOf(document, "$..data.developers[0]"));
-
+        if (gameDto.getDeveloper() == null) return null;
         JSONArray genresIds = JsonPath.read(document, "$..data.genres[*].id");
         gameDto.setGenres(genresIds.stream()
                                 .map(genre -> {
@@ -59,17 +61,6 @@ public class SteamJsonParserServiceImpl implements SteamJsonParserService{
         gameDto.setScreenshots(screens.stream()
                 .map(Object::toString)
                 .collect(Collectors.toSet()));
-
         return gameDto;
-    }
-
-
-    private String valueOf(Object document, String path) {
-        String res = "";
-        try {
-            res = ((JSONArray) JsonPath.read(document, path)).get(0).toString();
-        }
-        catch(IndexOutOfBoundsException ignored){}
-        return res;
     }
 }

@@ -29,7 +29,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(ApiException.class)
-    public ResponseEntity<String> handleMovieDBException(ApiException exception) {
+    public ResponseEntity<String> handleMovieDBException(MovieDbException exception) {
         String errorMessage = "Movies source is unreachable at the moment";
         LOGGER.error("Movie DB exception occured: ", exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);

@@ -2,6 +2,7 @@ package com.slyscrat.impress.service.scheduled.game;
 
 import com.slyscrat.impress.model.dto.game.GameDto;
 import com.slyscrat.impress.service.crud.game.GameCrudService;
+import com.slyscrat.impress.service.scheduled.AbstractApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:sources.properties")
-public class SteamApiServiceImpl implements SteamApiService {
+public class SteamApiServiceImpl extends AbstractApi implements SteamApiService {
 
     @Value("${steam.api.games.list.url2}")
     private String gamesListUrl;
@@ -28,10 +29,10 @@ public class SteamApiServiceImpl implements SteamApiService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    @Scheduled(cron = "0 0 3 * * ?")
+    //@Scheduled(cron = "0 0 3 * * ?")
     public void checkNewGames() {
         GameDto game;
-        Set<Integer> dbAppIds = new HashSet<>(gameCrudService.getAllAppIds());
+        Set<Integer> dbAppIds = new HashSet<>(gameCrudService.getIdsSet());
         int req = 0;
         for (Integer gameId: parserService.getGameIdSet(sendRequest(gamesListUrl))) {
             if (dbAppIds.isEmpty() || !dbAppIds.contains(gameId)) {
@@ -52,12 +53,6 @@ public class SteamApiServiceImpl implements SteamApiService {
         String res = sendRequest(gameInfoUrl + appId);
         if (res == null || containsHanScript(res)) return null;
         return parserService.getGameFullDto(res);
-    }
-
-    private boolean containsHanScript(String s) {
-        return s.codePoints().anyMatch(
-                codepoint ->
-                        Character.UnicodeScript.of(codepoint) == Character.UnicodeScript.HAN);
     }
 
     private String sendRequest(String url) {
