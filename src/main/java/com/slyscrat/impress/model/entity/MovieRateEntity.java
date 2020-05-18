@@ -1,9 +1,6 @@
 package com.slyscrat.impress.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MovieRateEntity extends AbstractDataBaseEntity{
+public class MovieRateEntity extends AbstractDataBaseEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId",

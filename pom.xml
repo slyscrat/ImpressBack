@@ -22,6 +22,7 @@
         <swagger.io.version>2.9.2</swagger.io.version>
         <modelmapper.version>2.3.5</modelmapper.version>
         <moviedb.version>4.3</moviedb.version>
+        <lenskit.version>2.0</lenskit.version>
     </properties>
 
     <dependencies>
@@ -65,6 +66,13 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <version>2.4.0</version>
+        </dependency>
+
+        <!-- recommendation -->
+        <dependency>
+            <groupId>org.grouplens.lenskit</groupId>
+            <artifactId>lenskit-core</artifactId>
+            <version>${lenskit.version}</version>
         </dependency>
 
         <!-- testing -->
