@@ -1,7 +1,5 @@
 package com.slyscrat.impress.service.recommendation;
 
-import com.slyscrat.impress.model.repository.movie.MovieRateRepository;
-import com.slyscrat.impress.service.crud.movie.MovieRateCrudService;
 import org.grouplens.lenskit.basic.AbstractItemScorer;
 import org.grouplens.lenskit.data.dao.UserEventDAO;
 import org.grouplens.lenskit.data.event.Rating;

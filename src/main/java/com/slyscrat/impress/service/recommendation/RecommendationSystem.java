@@ -20,45 +20,35 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecommendationSystem {
-
     private final ItemRecommender movieRec;
-    private final MovieCrudService movieCrudService;
     private final ItemRecommender gameRec;
     private final ItemRecommender bookRec;
 
     @Autowired
     public RecommendationSystem(MovieCrudService movieCrudService) throws RecommenderBuildException {
-        this.movieCrudService = movieCrudService;
+        this.movieRec = null;
+        this.bookRec = null;
+        this.gameRec = null;
+        /*
         this.movieRec = LenskitRecommender.build(configureMovieRecommender()).getItemRecommender();
         this.bookRec = LenskitRecommender.build(configureBookRecommender()).getItemRecommender();
         this.gameRec = LenskitRecommender.build(configureGameRecommender()).getItemRecommender();
+         */
     }
 
-    public void recommendMovie(long userId) {
+    public List<Integer> recommendMovie(long userId) {
         List<ScoredId> recs = movieRec.recommend(userId, 100);
-        recs = recs.stream().filter(item -> item.getScore() > 0).collect(Collectors.toList());
-        System.out.format("recommendations for user %d:\n", userId);
-        for (ScoredId id: recs) {
-            System.out.format("  %d: %.4f\n", id.getId(), id.getScore());
-        }
+        return recs.stream().filter(item -> item.getScore() > 0).map(item -> (int)item.getId()).collect(Collectors.toList());
     }
 
-    public void recommendGame(long userId) {
+    public List<Integer> recommendGame(long userId) {
         List<ScoredId> recs = gameRec.recommend(userId, 100);
-        recs = recs.stream().filter(item -> item.getScore() > 0).collect(Collectors.toList());
-        System.out.format("recommendations for user %d:\n", userId);
-        for (ScoredId id: recs) {
-            System.out.format("  %d: %.4f\n", id.getId(), id.getScore());
-        }
+        return recs.stream().filter(item -> item.getScore() > 0).map(item -> (int)item.getId()).collect(Collectors.toList());
     }
 
-    public void recommendBook(long userId) {
+    public List<Integer> recommendBook(long userId) {
         List<ScoredId> recs = bookRec.recommend(userId, 100);
-        recs = recs.stream().filter(item -> item.getScore() > 0).collect(Collectors.toList());
-        System.out.format("recommendations for user %d:\n", userId);
-        for (ScoredId id: recs) {
-            System.out.format("  %d: %.4f\n", id.getId(), id.getScore());
-        }
+        return recs.stream().filter(item -> item.getScore() > 0).map(item -> (int)item.getId()).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")
