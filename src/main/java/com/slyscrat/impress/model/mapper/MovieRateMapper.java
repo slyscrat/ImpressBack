@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Iterator;
 
 @Component
 public class MovieRateMapper extends AbstractMapper<MovieRateEntity, ItemRateDto> {
@@ -32,6 +33,7 @@ public class MovieRateMapper extends AbstractMapper<MovieRateEntity, ItemRateDto
     public void initMapper() {
         mapper.createTypeMap(dtoClass, entityClass)
                 .addMappings(m -> {
+                    m.skip(MovieRateEntity::setId);
                     m.skip(MovieRateEntity::setMovie);
                     m.skip(MovieRateEntity::setUser);
                 })
@@ -39,7 +41,7 @@ public class MovieRateMapper extends AbstractMapper<MovieRateEntity, ItemRateDto
         mapper.createTypeMap(entityClass, dtoClass)
                 .addMappings(m -> {
                     m.skip(ItemRateDto::setItem);
-                    m.skip(ItemRateDto::setRate);
+                    m.skip(ItemRateDto::setUser);
                 })
                 .setPostConverter(convertToDto());
     }
@@ -54,11 +56,28 @@ public class MovieRateMapper extends AbstractMapper<MovieRateEntity, ItemRateDto
     protected void mapSpecificFields(ItemRateDto source, MovieRateEntity destination) {
         MovieEntity movieEntity = movieRepository.findById(source.getItem())
                 .orElseThrow(() -> new EntityNotFoundException(MovieEntity.class, source.getItem()));
-        UserEntity userEntity = userRepository.findById(source.getItem())
-                .orElseThrow(() -> new EntityNotFoundException(MovieEntity.class, source.getItem()));
+        UserEntity userEntity = userRepository.findById(source.getUser())
+                .orElseThrow(() -> new EntityNotFoundException(MovieEntity.class, source.getUser()));
 
-        movieEntity.getRatedBy().add(destination);
+        movieEntity.getRated().add(destination);
         userEntity.getMovieRates().add(destination);
+        /*MovieRateEntity rateEntity = null;
+        Iterator<MovieRateEntity> ratesIterator = movieEntity.getRated().iterator();
+        while (ratesIterator.hasNext()) {
+            rateEntity = ratesIterator.next();
+            System.out.println(rateEntity.getMovie() + " for " + rateEntity.getUser());
+            if (rateEntity.getUser().getId().equals(source.getUser()) && rateEntity.getMovie().getId().equals(source.getId())) {
+
+                break;
+            }
+            rateEntity = null;
+        }
+        movieEntity.getRated().add(destination);
+
+        if(rateEntity != null) {
+            userEntity.getMovieRates().remove(rateEntity);
+        }
+        userEntity.getMovieRates().add(destination);*/
 
         destination.setMovie(movieEntity);
         destination.setUser(userEntity);

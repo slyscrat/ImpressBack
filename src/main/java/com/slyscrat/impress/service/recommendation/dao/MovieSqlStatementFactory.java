@@ -26,7 +26,7 @@ public class MovieSqlStatementFactory implements SQLStatementFactory {
 
     @Override
     public String prepareEvents(SortOrder sortOrder) {
-        return "select user_id, movie_id, rate from movie_rates;";
+        return "select user_id, movie_id, rate from movie_rates where rate > 0;";
     }
 
     @Override

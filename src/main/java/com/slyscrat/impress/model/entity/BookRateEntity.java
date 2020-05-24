@@ -9,13 +9,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "book_rates")
-@IdClass(BookRate.class)
+//@IdClass(BookRate.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@SequenceGenerator(name="BOOK_RATE_SEQ", sequenceName="bookRate_sequence")
 public class BookRateEntity extends AbstractDataBaseEntity{
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_RATE_SEQ")
+    @Column(name = "id", unique = true, nullable = false)
+    private Integer id;
+
+    //@Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId",
             referencedColumnName = "id",
@@ -23,7 +29,7 @@ public class BookRateEntity extends AbstractDataBaseEntity{
             nullable = false)
     private UserEntity user;
 
-    @Id
+    //@Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bookId",
             referencedColumnName = "id",

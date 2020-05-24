@@ -2,7 +2,6 @@ package com.slyscrat.impress.service.crud.movie;
 
 import com.slyscrat.impress.exception.EntityNotFoundException;
 import com.slyscrat.impress.model.dto.ItemRateDto;
-import com.slyscrat.impress.model.dto.ItemShortDto;
 import com.slyscrat.impress.model.entity.MovieRateEntity;
 import com.slyscrat.impress.model.mapper.Mapper;
 import com.slyscrat.impress.model.repository.movie.MovieRateRepository;
@@ -35,29 +34,24 @@ public class MovieRateCrudServiceImpl
 
     @Override
     public ItemRateDto update(ItemRateDto dto) {
-        MovieRateEntity movieRateEntity = repository.findById(dto.getId()).orElse(new MovieRateEntity());
+        MovieRateEntity movieRateEntity = repository.findByUser_IdAndMovie_Id(dto.getUser(), dto.getItem()).orElse(new MovieRateEntity());
         mapper.map(dto, movieRateEntity);
         return mapper.map(repository.save(movieRateEntity));
     }
 
     @Override
-    public void delete(Integer id) {
-        repository.findById(id).ifPresent(repository::delete);
-    }
-
+    public void delete(Integer id) { }
 
     @Override
-    public List<ItemShortDto> getShortInfoByUserId(Integer userId) {
-        List<MovieRateEntity> movieRatesSet = new ArrayList<>(repository.findAllByUser_Id(userId));
-        List<ItemShortDto> shortInfo = new ArrayList<>();
-        movieRatesSet.forEach(rate -> shortInfo.add(new ItemShortDto(rate.getUser().getId(), rate.getMovie().getId())));
-        return shortInfo;
+    public void delete(Integer userId, Integer movieId) {
+        repository.findByUser_IdAndMovie_Id(userId, movieId).ifPresent(repository::delete);
     }
 
     @Override
     public ItemRateDto findByUserAndMovie(Integer userId, Integer movieId) {
-        return mapper.map(repository.findByUser_IdAndMovie_Id(userId, movieId)
-                .orElseThrow(() -> new EntityNotFoundException(MovieRateEntity.class, movieId)));
+        MovieRateEntity rateEntity = repository.findByUser_IdAndMovie_Id(userId, movieId).orElse(null);
+        if (rateEntity != null) return mapper.map(rateEntity);
+        return null;
     }
 
     @Override

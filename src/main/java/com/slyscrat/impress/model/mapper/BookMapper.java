@@ -33,7 +33,7 @@ public class BookMapper extends AbstractMapper<BookEntity, BookDto> {
         mapper.createTypeMap(dtoClass, entityClass)
                 .addMappings(m -> {
                     m.skip(BookEntity::setTags);
-                    m.skip(BookEntity::setRatedBy);
+                    m.skip(BookEntity::setRated);
                 })
                 .setPostConverter(convertToEntity());
         mapper.createTypeMap(entityClass, dtoClass)

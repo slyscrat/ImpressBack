@@ -43,7 +43,7 @@ public class MovieMapper extends AbstractMapper<MovieEntity, MovieDto> {
                 .addMappings(m -> {
                     m.skip(MovieEntity::setCrew);
                     m.skip(MovieEntity::setGenres);
-                    m.skip(MovieEntity::setRatedBy);
+                    m.skip(MovieEntity::setRated);
                 })
                 .setPostConverter(convertToEntity());
         mapper.createTypeMap(entityClass, dtoClass)

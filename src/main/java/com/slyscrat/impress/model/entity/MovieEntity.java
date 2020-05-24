@@ -60,5 +60,5 @@ public class MovieEntity extends AbstractDataBaseEntity {
     @OneToMany(mappedBy = "movie",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<MovieRateEntity> ratedBy = new HashSet<>();
+    private Set<MovieRateEntity> rated = new HashSet<>();
 }

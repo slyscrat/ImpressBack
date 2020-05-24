@@ -26,7 +26,7 @@ public class GameSqlStatementFactory implements SQLStatementFactory {
 
     @Override
     public String prepareEvents(SortOrder sortOrder) {
-        return "select user_id, game_id, rate from game_rates;";
+        return "select user_id, game_id, rate from game_rates where rate > 0;";
     }
 
     @Override

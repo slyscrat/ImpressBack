@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,6 +28,13 @@ public class MovieGenreCrudServiceImpl
     @Override
     public Set<Integer> getIdsSet() {
         return repository.getIdsSet();
+    }
+
+    @Override
+    public List<MovieGenreDto> getAll() {
+        return repository.findAll().stream()
+                .map(mapper::map)
+                .collect(Collectors.toList());
     }
 
     @Override

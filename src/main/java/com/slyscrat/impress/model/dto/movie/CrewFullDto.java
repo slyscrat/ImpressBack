@@ -9,4 +9,10 @@ import lombok.*;
 @ToString
 public class CrewFullDto extends CrewDto{
     private String post;
+
+    public CrewFullDto(CrewDto crewDto) {
+        super();
+        this.setId(crewDto.getId());
+        this.setName(crewDto.getName());
+    }
 }

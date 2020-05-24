@@ -7,5 +7,6 @@ import java.util.Set;
 
 public interface BookTagCrudService extends CrudService<BookTagDto> {
     Set<BookTagDto> getTagsSet();
+    //Set<Integer> getTagsIdsSet();
     BookTagDto getBookTagByName(String name);
 }

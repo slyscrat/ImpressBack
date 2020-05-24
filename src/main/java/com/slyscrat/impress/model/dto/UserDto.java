@@ -26,10 +26,9 @@ public class UserDto extends DataTransferObject {
     @NotBlank
     private String nickName;
 
-    @JsonIgnore
     private String password;
 
-    private Set<Integer> gameRates = new HashSet<>();
+/*    private Set<Integer> gameRates = new HashSet<>();
     private Set<Integer> movieRates = new HashSet<>();
-    private Set<Integer> bookRates = new HashSet<>();
+    private Set<Integer> bookRates = new HashSet<>();*/
 }

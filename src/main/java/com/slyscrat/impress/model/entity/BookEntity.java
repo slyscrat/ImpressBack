@@ -49,5 +49,5 @@ public class BookEntity extends AbstractDataBaseEntity {
     @OneToMany(mappedBy = "book",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<BookRateEntity> ratedBy = new HashSet<>();
+    private Set<BookRateEntity> rated = new HashSet<>();
 }

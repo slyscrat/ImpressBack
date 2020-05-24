@@ -26,7 +26,7 @@ public class BookSqlStatementFactory implements SQLStatementFactory {
 
     @Override
     public String prepareEvents(SortOrder sortOrder) {
-        return "select user_id, book_id, rate from book_rates;";
+        return "select user_id, book_id, rate from book_rates where rate > 0;";
     }
 
     @Override

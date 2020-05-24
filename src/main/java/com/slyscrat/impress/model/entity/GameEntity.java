@@ -55,5 +55,5 @@ public class GameEntity extends AbstractDataBaseEntity {
     @OneToMany(mappedBy = "game",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<GameRateEntity> ratedBy = new HashSet<>();
+    private Set<GameRateEntity> rated = new HashSet<>();
 }

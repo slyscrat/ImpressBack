@@ -7,7 +7,19 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class MovieShortDto extends MovieDto{
-    private Integer rate = 0;
-    private boolean isFutured;
+public class MovieShortDto extends MovieDto {
+    private Short rate = -1;
+    private boolean isFutured = false;
+
+    public MovieShortDto(MovieDto movieDto) {
+        super();
+        this.setId(movieDto.getId());
+        this.setName(movieDto.getName());
+        this.setCrew(movieDto.getCrew());
+        this.setGenres(movieDto.getGenres());
+        this.setDescription(movieDto.getDescription());
+        this.setDuration(movieDto.getDuration());
+        this.setPoster(movieDto.getPoster());
+        this.setReleaseDate(movieDto.getReleaseDate());
+    }
 }

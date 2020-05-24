@@ -1,6 +1,5 @@
 package com.slyscrat.impress.service.crud.movie;
 
-import com.slyscrat.impress.exception.EntityNotFoundException;
 import com.slyscrat.impress.model.dto.movie.MovieDto;
 import com.slyscrat.impress.model.entity.MovieEntity;
 import com.slyscrat.impress.model.mapper.Mapper;
@@ -44,7 +43,7 @@ public class MovieCrudServiceImpl
     @Override
     public MovieDto update(MovieDto dto) {
         MovieEntity movieEntity = repository.findById(dto.getId())
-                .orElseThrow(() -> new EntityNotFoundException(MovieEntity.class, dto.getId()));
+                .orElse(new MovieEntity());
         mapper.map(dto, movieEntity);
         return mapper.map(repository.save(movieEntity));
     }
@@ -76,7 +75,6 @@ public class MovieCrudServiceImpl
     @Override
     public List<MovieDto> findAllByGenresIds(Set<Integer> ids, Pageable paging) {
         Set<Integer> movieIds = getMoviesIdsByGenres(ids);
-        movieIds.forEach(System.out::println);
         return repository.findAllByIdIn(movieIds, paging).stream()
                 .map(mapper::map)
                 .collect(Collectors.toList());

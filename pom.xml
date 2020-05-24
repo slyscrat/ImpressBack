@@ -23,6 +23,7 @@
         <modelmapper.version>2.3.5</modelmapper.version>
         <moviedb.version>4.3</moviedb.version>
         <lenskit.version>2.0</lenskit.version>
+        <io.jjwt.version>0.9.1</io.jjwt.version>
     </properties>
 
     <dependencies>
@@ -49,6 +50,22 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${io.jjwt.version}</version>
         </dependency>
 
         <!-- utilities -->

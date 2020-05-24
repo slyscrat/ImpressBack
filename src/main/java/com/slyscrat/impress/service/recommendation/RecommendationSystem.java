@@ -26,6 +26,7 @@ public class RecommendationSystem {
 
     @Autowired
     public RecommendationSystem(MovieCrudService movieCrudService) throws RecommenderBuildException {
+
         this.movieRec = null;
         this.bookRec = null;
         this.gameRec = null;
@@ -33,7 +34,7 @@ public class RecommendationSystem {
         this.movieRec = LenskitRecommender.build(configureMovieRecommender()).getItemRecommender();
         this.bookRec = LenskitRecommender.build(configureBookRecommender()).getItemRecommender();
         this.gameRec = LenskitRecommender.build(configureGameRecommender()).getItemRecommender();
-         */
+        */
     }
 
     public List<Integer> recommendMovie(long userId) {

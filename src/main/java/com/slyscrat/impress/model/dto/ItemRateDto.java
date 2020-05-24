@@ -18,6 +18,6 @@ public class ItemRateDto extends DataTransferObject {
     @NotNull
     private Integer item;
     @PositiveOrZero
-    private Integer rate;
-    private String note;
+    private Short rate = 0;
+    private String note = "";
 }
