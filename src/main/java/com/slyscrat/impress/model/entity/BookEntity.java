@@ -27,7 +27,7 @@ public class BookEntity extends AbstractDataBaseEntity {
     @Column(name = "author", nullable = false)
     private String author;
 
-    @Column(name = "publicationDate", nullable = false, length = 4)
+    @Column(name = "releaseDate", nullable = false, length = 4)
     private String publicationDate;
 
     @NotNull

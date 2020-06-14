@@ -10,9 +10,9 @@ import java.util.Set;
 
 @Repository
 public interface GameGenreRepository extends JpaRepository<GameGenreEntity, Integer> {
-    @Query("select gg.id from GameGenreEntity gg")
+    @Query("select g.id from GameGenreEntity g")
     Set<Integer> getIdsSet();
 
-    @Query("select gg from GameGenreEntity gg order by gg.name")
+    @Query("select g from GameGenreEntity g order by g.name")
     List<GameGenreEntity> getAll();
 }

@@ -33,17 +33,18 @@ public class MovieRatingDAO implements EventDAO {
     }
 
     private void ensureRatingCache() {
-        if (cache == null) {
+        cache = new EventCollectionDAO(Cursors.makeList(jdbcDao.streamEvents()));
+        /*if (cache == null) {
             synchronized (this) {
                 if (cache == null) {
                     //cache = new EventCollectionDAO(Cursors.makeList(csvDao.streamEvents()));
-                    cache = new EventCollectionDAO(Cursors.makeList(jdbcDao.streamEvents()));
+
                     //cache = new EventCollectionDAO(Cursors.makeList(repository.findAll()));
                     // cache = new EventCollectionDAO(list);
                     // System.out.println(cache);
                 }
             }
-        }
+        }*/
     }
 
     @Override

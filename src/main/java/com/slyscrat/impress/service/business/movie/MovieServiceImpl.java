@@ -64,6 +64,7 @@ public class MovieServiceImpl extends AbstractBusinessService implements MovieSe
             }
             itemRateDto.setRate((short) 0);
         }
+        else if (rate == 0 && itemRateDto.getRate() > 0) { }
         else itemRateDto.setRate(rate);
         return movieRateCrudService.update(itemRateDto);
     }
@@ -95,6 +96,9 @@ public class MovieServiceImpl extends AbstractBusinessService implements MovieSe
         List<Integer> ids = recommendationSystem.recommendMovie(userId);
         int startIndex = page < 0 ? 0 : page * pageSize;
         int endIndex = page < 1 ? pageSize : (page + 1) * pageSize;
+        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBB");
+        System.out.println(endIndex);
+        System.out.println(ids.size());
         ids = ids.subList(startIndex, endIndex);
         List<MovieEntity> movies = movieRepository.findAllByIdIn(ids);
         List<Integer> finalIds = ids;
@@ -162,6 +166,7 @@ public class MovieServiceImpl extends AbstractBusinessService implements MovieSe
         if (name == null) return getAllList(page, 0, null, userId);
         Pageable paging = PageRequest.of(page, pageSize, Sort.by(RELEASE_DATE).descending());
         return movieRepository.findAllByNameContainsIgnoreCase(name, paging).toList().stream()
+                .filter(movieEntity -> !movieEntity.getId().equals(20558))
                 .map(movieMapper::map)
                 .map(movieDto -> mapToShort(movieDto, userId))
                 .collect(Collectors.toList());

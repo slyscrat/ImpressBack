@@ -5,10 +5,8 @@ import com.slyscrat.impress.model.dto.auth.AuthCredentialsDto;
 import com.slyscrat.impress.model.dto.auth.SuccessfulAuthDto;
 import com.slyscrat.impress.service.crud.UserCrudService;
 import com.slyscrat.impress.service.security.UserAuthenticationService;
-import com.slyscrat.impress.service.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +34,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping(value = "/logout")
-	public ResponseEntity<String> logout(@RequestBody UserDto userDto, HttpServletRequest request) {
+	public ResponseEntity<String> logout(HttpServletRequest request) {
 		authenticationService.logout(request);
 		return ResponseEntity.ok("done");
 	}

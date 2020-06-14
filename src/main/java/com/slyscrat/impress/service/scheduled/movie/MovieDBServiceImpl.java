@@ -107,8 +107,8 @@ public class MovieDBServiceImpl extends AbstractApi implements MovieDBService {
         }).collect(Collectors.toSet()));
         movieDto.setDescription(movie.getOverview());
         movieDto.setDuration((short)movie.getRuntime());
-        movieDto.setPoster(movie.getPosterPath());
-        if (movieDto.getPoster() == null) return;
+        movieDto.setIcon(movie.getPosterPath());
+        if (movieDto.getIcon() == null) return;
         movieDto.setName(movie.getTitle());
         try {
             movieDto.setReleaseDate(dateFormat.parse(movie.getReleaseDate()));

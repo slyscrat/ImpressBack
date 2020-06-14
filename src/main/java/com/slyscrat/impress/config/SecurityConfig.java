@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
+						.allowedOrigins("http://localhost:8080")
 						.allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
 			}
 		};
@@ -102,7 +103,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/auth/registration").permitAll()
 				.antMatchers("/auth/logout").hasAnyRole(ADMIN, USER)
 
-				.antMatchers("/user/").hasRole(ADMIN)
+				.antMatchers("/user/{id}").hasAnyRole(ADMIN, USER)
+				.antMatchers("/user/{id}/del").hasRole(ADMIN)
+				.antMatchers("/user/{id}/edit").hasRole(ADMIN)
+				.antMatchers("/user/list").hasRole(ADMIN)
 
 				.and()
 				.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));

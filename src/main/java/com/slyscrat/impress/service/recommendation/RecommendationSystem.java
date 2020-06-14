@@ -20,25 +20,38 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecommendationSystem {
-    private final ItemRecommender movieRec;
-    private final ItemRecommender gameRec;
-    private final ItemRecommender bookRec;
+    private /*final*/ ItemRecommender movieRec;
+    private /*final*/ ItemRecommender gameRec;
+    private /*final*/ ItemRecommender bookRec;
 
     @Autowired
     public RecommendationSystem(MovieCrudService movieCrudService) throws RecommenderBuildException {
-
+        /*
         this.movieRec = null;
         this.bookRec = null;
         this.gameRec = null;
-        /*
+        */
+
         this.movieRec = LenskitRecommender.build(configureMovieRecommender()).getItemRecommender();
         this.bookRec = LenskitRecommender.build(configureBookRecommender()).getItemRecommender();
         this.gameRec = LenskitRecommender.build(configureGameRecommender()).getItemRecommender();
-        */
+
     }
 
     public List<Integer> recommendMovie(long userId) {
         List<ScoredId> recs = movieRec.recommend(userId, 100);
+        final RecommendationSystem rs = this;
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    rs.movieRec = LenskitRecommender.build(configureMovieRecommender()).getItemRecommender();
+                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                } catch (RecommenderBuildException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
         return recs.stream().filter(item -> item.getScore() > 0).map(item -> (int)item.getId()).collect(Collectors.toList());
     }
 

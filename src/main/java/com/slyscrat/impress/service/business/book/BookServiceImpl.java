@@ -64,6 +64,7 @@ public class BookServiceImpl extends AbstractBusinessService implements BookServ
             }
             itemRateDto.setRate((short) 0);
         }
+        else if (rate == 0 && itemRateDto.getRate() > 0) { }
         else itemRateDto.setRate(rate);
         return bookRateCrudService.update(itemRateDto);
     }

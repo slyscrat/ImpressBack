@@ -74,7 +74,7 @@ public class JwtTokenProvider {
 
     String parseTokenFromRequest(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
-        if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
+        if (authorizationHeader != null && authorizationHeader.startsWith(BEARER) && authorizationHeader.length() > (BEARER.length() + 1)) {
             return authorizationHeader.substring(BEARER.length() + 1);
         }
         return null;

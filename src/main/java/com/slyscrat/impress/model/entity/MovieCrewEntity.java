@@ -28,6 +28,7 @@ public class MovieCrewEntity extends AbstractDataBaseEntity{
             nullable = false)
     private MovieEntity movie;
 
+    @Id
     @Column(name = "post")
     private String post;
 

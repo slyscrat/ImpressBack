@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +25,8 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> bookInfo(@PathVariable Integer id) {
-        return ResponseEntity.ok(bookService.getById(id, 1));
+        Integer userId = userCrudService.getUserIdFromSecurityContext();
+        return ResponseEntity.ok(bookService.getById(id, userId));
     }
 
     @GetMapping("/list")
@@ -54,16 +58,24 @@ public class BookController {
     @GetMapping("/list/recommended")
     public ResponseEntity<List<BookDto>> bookRecommendedList(@RequestParam(name = "p") Optional<Integer> page) {
         Integer userId = userCrudService.getUserIdFromSecurityContext();
+        if (userId.equals(0) || bookService.getRatedList(0,userId).isEmpty()) return ResponseEntity.ok(null);
         return ResponseEntity.ok(bookService.getRecommendedList(page.orElse(0), userId));
     }
 
     @PostMapping("/{id}/note")
     public ResponseEntity<ItemRateDto> bookNote(@PathVariable Integer id, @RequestBody String note) {
         Integer userId = userCrudService.getUserIdFromSecurityContext();
-        if (note.length() > 255) note = note.substring(0, 255);
-        ItemRateDto result = bookService.note(id, note, userId);
-        if (result == null) return ResponseEntity.badRequest().body(null);
-        return ResponseEntity.ok(result);
+        if (note.length() == 0) return ResponseEntity.badRequest().body(null);
+        try {
+            note = URLDecoder.decode(note.substring(0, note.length() - 1), StandardCharsets.UTF_8.name());
+            if (note.length() > 255) note = note.substring(0, 255);
+            ItemRateDto result = bookService.note(id, note, userId);
+            if (result == null) return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.ok(result);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.badRequest().body(null);
     }
 
     @PostMapping("/{id}/note/del")
@@ -74,10 +86,11 @@ public class BookController {
     }
 
     @PostMapping("/{id}/rate")
-    public ResponseEntity<ItemRateDto> bookRate(@PathVariable Integer id, @RequestBody Short rate) {
-        if (rate < 0 || rate > 5) return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<ItemRateDto> bookRate(@PathVariable Integer id, @RequestBody String rate) {
+        Short points = Short.valueOf(rate.substring(0,1));
+        if (points < 0 || points > 5) return ResponseEntity.badRequest().body(null);
         Integer userId = userCrudService.getUserIdFromSecurityContext();
-        ItemRateDto result = bookService.rate(id, rate, userId);
+        ItemRateDto result = bookService.rate(id, points, userId);
         if (result == null) return ResponseEntity.badRequest().body(null);
         if (result.getUser().equals(0)) return ResponseEntity.ok().body(null);
         return ResponseEntity.ok(result);

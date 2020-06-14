@@ -40,7 +40,9 @@ public class UserCrudServiceImpl
 
         UserEntity userEntity = new UserEntity();
         mapper.map(dto, userEntity);
-        return mapper.map(repository.save(userEntity));
+        UserDto dtoRes = mapper.map(repository.save(userEntity));
+        dtoRes.setPassword(null);
+        return dtoRes;
     }
 
     @Override
@@ -49,13 +51,22 @@ public class UserCrudServiceImpl
                 .orElseThrow(() -> new EntityNotFoundException(UserEntity.class, dto.getId()));
 
         mapper.map(dto, userEntity);
-        return mapper.map(repository.save(userEntity));
+        UserDto dtoRes = mapper.map(repository.save(userEntity));
+        dtoRes.setPassword(null);
+        return dtoRes;
     }
 
     @Override
     public UserDto findByEmail(String email) {
         return mapper.map(repository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(UserEntity.class, email)));
+    }
+
+    @Override
+    public UserDto findByEmailPriv(String email) {
+        UserDto dtoRes = findByEmail(email);
+        dtoRes.setPassword(null);
+        return dtoRes;
     }
 
     @Override
@@ -66,7 +77,12 @@ public class UserCrudServiceImpl
 
     @Override
     public UserDto findById(Integer id) {
-        return null;
+        UserEntity userEntity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UserEntity.class, id));
+
+        UserDto dto = mapper.map(userEntity);
+        dto.setPassword(null);
+        return dto;
     }
 
     @Override
@@ -78,7 +94,11 @@ public class UserCrudServiceImpl
     public Set<UserDto> findAll(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findAll(pageable).stream().filter(item -> item.getId() != 1)
-                .map(mapper::map)
+                .map(item -> {
+                    UserDto dtoRes = mapper.map(item);
+                    dtoRes.setPassword(null);
+                    return dtoRes;
+                })
                 .collect(Collectors.toSet());
     }
 

@@ -4,7 +4,6 @@ import com.slyscrat.impress.model.dto.ItemRateDto;
 import com.slyscrat.impress.model.dto.book.BookDto;
 
 import java.util.List;
-import java.util.Set;
 
 public interface BookService {
 

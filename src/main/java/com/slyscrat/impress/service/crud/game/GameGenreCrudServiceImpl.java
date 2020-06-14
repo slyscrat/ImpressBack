@@ -46,7 +46,7 @@ public class GameGenreCrudServiceImpl
 
     @Override
     public List<GameGenreDto> getAll() {
-        return repository.findAll().stream()
+        return repository.getAll().stream()
                 .map(mapper::map)
                 .collect(Collectors.toList());
     }

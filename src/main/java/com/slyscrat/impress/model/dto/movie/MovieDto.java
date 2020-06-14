@@ -17,7 +17,7 @@ public class MovieDto extends DataTransferObject {
     @NotBlank
     private String name;
     @NotBlank
-    private String poster;
+    private String icon;
     private String description;
     private Short duration;
     private Date releaseDate;

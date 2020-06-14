@@ -19,7 +19,7 @@ public class MovieShortDto extends MovieDto {
         this.setGenres(movieDto.getGenres());
         this.setDescription(movieDto.getDescription());
         this.setDuration(movieDto.getDuration());
-        this.setPoster(movieDto.getPoster());
+        this.setIcon(movieDto.getIcon());
         this.setReleaseDate(movieDto.getReleaseDate());
     }
 }

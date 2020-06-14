@@ -25,8 +25,8 @@ public class MovieEntity extends AbstractDataBaseEntity {
     private String name;
 
     @NotNull
-    @Column(name = "poster", nullable = false)
-    private String poster;
+    @Column(name = "icon", nullable = false)
+    private String icon;
 
     @NotNull
     @Column(name = "duration", nullable = false)

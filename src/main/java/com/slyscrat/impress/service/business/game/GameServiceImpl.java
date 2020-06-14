@@ -67,6 +67,7 @@ public class GameServiceImpl extends AbstractBusinessService implements GameServ
             }
             itemRateDto.setRate((short) 0);
         }
+        else if (rate == 0 && itemRateDto.getRate() > 0) { }
         else itemRateDto.setRate(rate);
         return gameRateCrudService.update(itemRateDto);
     }
@@ -132,7 +133,7 @@ public class GameServiceImpl extends AbstractBusinessService implements GameServ
         Pageable paging;
         switch (checkSort(sort)) {
             case DateASC:
-                paging = PageRequest.of(page, pageSize, Sort.by(DEVELOPER).ascending());
+                paging = PageRequest.of(page, pageSize, Sort.by(DEVELOPER).descending());
                 break;
             case NameASC:
                 paging = PageRequest.of(page, pageSize, Sort.by("name").ascending());
@@ -141,7 +142,7 @@ public class GameServiceImpl extends AbstractBusinessService implements GameServ
                 paging = PageRequest.of(page, pageSize, Sort.by("name").descending());
                 break;
             default:
-                paging = PageRequest.of(page, pageSize, Sort.by(DEVELOPER).descending());
+                paging = PageRequest.of(page, pageSize, Sort.by(DEVELOPER).ascending());
                 break;
         }
 

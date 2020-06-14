@@ -27,13 +27,14 @@ public class BookRatingDAO implements EventDAO {
     }
 
     private void ensureRatingCache() {
-        if (cache == null) {
+        cache = new EventCollectionDAO(Cursors.makeList(jdbcDao.streamEvents()));
+        /*if (cache == null) {
             synchronized (this) {
                 if (cache == null) {
-                    cache = new EventCollectionDAO(Cursors.makeList(jdbcDao.streamEvents()));
+
                 }
             }
-        }
+        }*/
     }
 
     @Override

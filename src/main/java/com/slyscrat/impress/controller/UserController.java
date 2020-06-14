@@ -15,6 +15,15 @@ import java.util.Set;
 public class UserController {
     private final UserCrudService userCrudService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
+        Integer userId = userCrudService.getUserIdFromSecurityContext();
+        if (userId.equals(id) || userId == 1)
+            return ResponseEntity.ok(userCrudService.findById(id));
+        else
+            return ResponseEntity.badRequest().body(null);
+    }
+
     @PostMapping("/{id}/edit")
     public ResponseEntity<UserDto> userUpdate(@PathVariable Integer id, @RequestBody UserDto user) {
         user.setId(id);
@@ -26,7 +35,12 @@ public class UserController {
         return ResponseEntity.ok(userCrudService.findAll(page.orElse(0), 20));
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/search")
+    public ResponseEntity<UserDto> userList(@PathVariable(name = "q") String email) {
+        return ResponseEntity.ok(userCrudService.findByEmailPriv(email));
+    }
+
+    @PostMapping("/{id}/del")
     public ResponseEntity<String> userDelete(@PathVariable Integer id) {
         userCrudService.delete(id);
         return ResponseEntity.ok("done");
